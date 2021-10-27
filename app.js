@@ -83,6 +83,46 @@ app.get('/cursos/delete/:id', (req, res) => {
     })
 })
 
+///SECCIONES
+
+app.get('/secciones', (req, res) => {
+
+})
+
+//docente 
+
+app.get('/docente', (req, res) => {
+    connection.query(querymanager.getDocentes(), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
+
+app.post('/crear-docente', (req, res) => {
+    connection.query(querymanager.addDocente(req.body.nombre, req.body.apellido), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
+
+app.get('/docente/delete/:id', (req, res) => {
+    connection.query(querymanager.deleteDocente(req.params.id), (error, response) => {
+        if (error) throw error;
+        res.json({})
+    })
+})
+
+app.patch('/docente', (req, res) => {
+    connection.query(querymanager.editDocente(req.body.id, req.body.nombre, req.body.apellido), (error, response) => {
+        if (error) throw error;
+        res.json({})
+    });
+})
+
+
+
+
+
 
 //////STUDENT
 
