@@ -18,9 +18,7 @@ module.exports = class QueryManager {
     deleteCourse(id) {
         return `DELETE FROM Curso WHERE IdCurso = ${id};`
     }
-    getSections() {
 
-    }
     getDocentes() {
         return 'select IdDocente as id, NNombreD as nombre, NApellidoD as apellido from Docente'
     }
@@ -32,6 +30,20 @@ module.exports = class QueryManager {
         return `DELETE FROM Docente WHERE IdDocente = ${id};`
     }
     editDocente(id, nombre, apellido) {
-        return `UPDATE Docente SET NNombreD = '${nombre}', NApellidoD = '${apellido}' WHERE IdDocente = ${id}`
+            return `UPDATE Docente SET NNombreD = '${nombre}', NApellidoD = '${apellido}' WHERE IdDocente = ${id}`
+        }
+        //secciones
+    getSecciones() {
+        return `select IdSeccion as id, NSeccion as name, Curso.NCurso as cursoname,THorario as horario  ,  concat_ws(' ',Docente.NNombreD, Docente.NApellidoD) as docente from Seccion
+        inner join Curso on Curso.IdCurso = Seccion.IdCurso
+        inner join Docente on Docente.IdDocente = Seccion.IdDocente;`
+    }
+
+    docenteseccion() {
+        return `Select concat_ws(' ',NNombreD,NApellidoD) as text , IdDocente as value from Docente;`
+    }
+
+    cursoseccion() {
+        return `select NCurso as text , IdCurso as value from Curso;`
     }
 }

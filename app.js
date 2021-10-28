@@ -86,8 +86,25 @@ app.get('/cursos/delete/:id', (req, res) => {
 ///SECCIONES
 
 app.get('/secciones', (req, res) => {
-
+    connection.query(querymanager.getSecciones(), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
 })
+app.get('/secciones-docentes', (req, res) => {
+    connection.query(querymanager.docenteseccion(), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
+app.get('/secciones-cursos', (req, res) => {
+    connection.query(querymanager.cursoseccion(), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
+
+
 
 //docente 
 
