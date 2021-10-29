@@ -104,6 +104,27 @@ app.get('/secciones-cursos', (req, res) => {
     })
 })
 
+app.post('/seccion', (req, res) => {
+    connection.query(querymanager.addSeccion(req.body.nombre, req.body.docente, req.body.curso, req.body.horario), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
+
+app.get('/seccion/delete/:id', (req, res) => {
+    connection.query(querymanager.deleteSeccion(req.params.id), (error, response) => {
+        if (error) throw error;
+        res.json({})
+    })
+})
+
+app.patch('/seccion', (req, res) => {
+    connection.query(querymanager.updateSeccion(req.body.id, req.body.nombre, req.body.docente, req.body.curso, req.body.horario), (error, response) => {
+        if (error) throw error;
+        res.json({})
+    });
+})
+
 
 
 //docente 

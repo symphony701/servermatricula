@@ -46,4 +46,14 @@ module.exports = class QueryManager {
     cursoseccion() {
         return `select NCurso as text , IdCurso as value from Curso;`
     }
+
+    addSeccion(nombre, docente, curso, horario) {
+        return `INSERT INTO Seccion (NSeccion,IdCurso,THorario,IdDocente) VALUES ('${nombre}',${curso},'${horario}',${docente});`
+    }
+    deleteSeccion(id) {
+        return `DELETE FROM Seccion WHERE IdSeccion = ${id};`
+    }
+    updateSeccion(id, nombre, docente, curso, horario) {
+        return `UPDATE Seccion SET NSeccion = '${nombre}', IdCurso = ${curso} ,IdDocente = ${docente}, THorario = '${horario}' WHERE IdSeccion = ${id}`
+    }
 }
