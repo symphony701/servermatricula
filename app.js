@@ -158,11 +158,28 @@ app.patch('/docente', (req, res) => {
 })
 
 
-
-
-
-
 //////STUDENT
+
+app.get('/solicitud-espera/:id', (req, res) => {
+    connection.query(querymanager.getSolicitudesEspera(req.params.id), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
+
+app.get('/solicitud-seccion-curso', (req, res) => {
+    connection.query(querymanager.getSeccionCurso(), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
+
+app.post('/solicitud', (req, res) => {
+    connection.query(querymanager.addSolicitud(req.body.idAlumno, req.body.idSeccion, req.body.semestre), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
 
 
 

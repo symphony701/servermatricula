@@ -56,4 +56,21 @@ module.exports = class QueryManager {
     updateSeccion(id, nombre, docente, curso, horario) {
         return `UPDATE Seccion SET NSeccion = '${nombre}', IdCurso = ${curso} ,IdDocente = ${docente}, THorario = '${horario}' WHERE IdSeccion = ${id}`
     }
+    getSolicitudesEspera(idUsuario) {
+        return `select concat_ws(' ',Usuario.NNombre,Usuario.NApellido) as nameAlumno, Seccion.NSeccion as seccion,Curso.NCurso as curso, concat_ws(' ',Docente.NNombreD,Docente.NApellidoD) as docente  ,NSemestre as semestre, EstadoMatricula.NEstado as estado
+                from Matricula
+                inner join Usuario on Usuario.IdUsuario = Matricula.IdAlumno
+                inner join Seccion on Seccion.IdSeccion = Matricula.IdSeccion
+                inner join Curso on Curso.IdCurso = Seccion.IdCurso
+                inner join EstadoMatricula on EstadoMatricula.IdEstado = Matricula.IdEstado
+                inner join Docente on Docente.IdDocente = Seccion.IdDocente
+                where Usuario.IdUsuario = ${idUsuario} and EstadoMatricula.IdEstado = 1`
+    }
+    getSeccionCurso() {
+        return `select concat_ws(' - ',Seccion.NSeccion,Curso.NCurso) as text , Seccion.IdSeccion as id from Seccion
+                inner join Curso on Curso.IdCurso = Seccion.IdCurso;`
+    }
+    addSolicitud(idAlumno, idSeccion, semestre) {
+        return `INSERT INTO Matricula ('IdAlumno', 'IdSeccion', 'NSemestre', 'IdEstado') VALUES (${idAlumno}, ${idSeccion}, '${semestre}', '1');`
+    }
 }
