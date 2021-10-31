@@ -194,6 +194,27 @@ app.get('/norepeat/:idAlumno/:idSeccion', (req, res) => {
     })
 })
 
+app.get('/matriculas-espera/:idAlumno', (req, res) => {
+    connection.query(querymanager.getAllMatriculas(req.params.idAlumno), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
+
+app.delete('/matricula/delete/:id', (req, res) => {
+    connection.query(querymanager.eliminarMatricula(req.params.id), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
+
+app.get('/matriculas-historial/:idAlumno', (req, res) => {
+    connection.query(querymanager.matriculaHistorial(req.params.idAlumno), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
+
 
 
 

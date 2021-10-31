@@ -83,4 +83,28 @@ module.exports = class QueryManager {
          FROM Matricula
 		 WHERE IdAlumno = ${idAlumno} and IdSeccion = ${idSeccion} and IdEstado !=3;`
     }
+    getAllMatriculas(idAlumno) {
+        return `select Matricula.IdMatricula as id, concat_ws(' ',Usuario.NNombre,Usuario.NApellido) as nameAlumno, Seccion.NSeccion as seccion,Curso.NCurso as curso, concat_ws(' ',Docente.NNombreD,Docente.NApellidoD) as docente  ,NSemestre as semestre, EstadoMatricula.NEstado as estado
+                from Matricula
+                inner join Usuario on Usuario.IdUsuario = Matricula.IdAlumno
+                inner join Seccion on Seccion.IdSeccion = Matricula.IdSeccion
+                inner join Curso on Curso.IdCurso = Seccion.IdCurso
+                inner join EstadoMatricula on EstadoMatricula.IdEstado = Matricula.IdEstado
+                inner join Docente on Docente.IdDocente = Seccion.IdDocente
+                where Usuario.IdUsuario = ${idAlumno} and EstadoMatricula.IdEstado = 1`
+    }
+    eliminarMatricula(idMatricula) {
+        return `DELETE FROM Matricula WHERE IdMatricula = ${idMatricula};`
+    }
+
+    matriculaHistorial(idUsuario) {
+        return `select concat_ws(' ',Usuario.NNombre,Usuario.NApellido) as nameAlumno, Seccion.NSeccion as seccion,Curso.NCurso as curso, concat_ws(' ',Docente.NNombreD,Docente.NApellidoD) as docente  ,NSemestre as semestre, EstadoMatricula.NEstado as estado
+                from Matricula
+                inner join Usuario on Usuario.IdUsuario = Matricula.IdAlumno
+                inner join Seccion on Seccion.IdSeccion = Matricula.IdSeccion
+                inner join Curso on Curso.IdCurso = Seccion.IdCurso
+                inner join EstadoMatricula on EstadoMatricula.IdEstado = Matricula.IdEstado
+                inner join Docente on Docente.IdDocente = Seccion.IdDocente
+                where Usuario.IdUsuario = ${idUsuario}`
+    }
 }
