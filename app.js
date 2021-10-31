@@ -216,6 +216,26 @@ app.get('/matriculas-historial/:idAlumno', (req, res) => {
 })
 
 
+app.get('/aprovar-rechazar', (req, res) => {
+    connection.query(querymanager.getAllMatriculasAprovarRechazar(), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
+
+app.get('/matricula/procesar/:idMatricula/:action', (req, res) => {
+    connection.query(querymanager.procesarMatricula(req.params.idMatricula, req.params.action), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
+
+app.get('/listar-matriculas-admin', (req, res) => {
+    connection.query(querymanager.listaMatriculasAdmin(), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
 
 
 

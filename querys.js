@@ -107,4 +107,30 @@ module.exports = class QueryManager {
                 inner join Docente on Docente.IdDocente = Seccion.IdDocente
                 where Usuario.IdUsuario = ${idUsuario}`
     }
+    getAllMatriculasAprovarRechazar() {
+        return `select Matricula.IdMatricula as id, concat_ws(' ',Usuario.NNombre,Usuario.NApellido) as nameAlumno, Seccion.NSeccion as seccion,Curso.NCurso as curso, concat_ws(' ',Docente.NNombreD,Docente.NApellidoD) as docente  ,NSemestre as semestre, EstadoMatricula.NEstado as estado
+                from Matricula
+                inner join Usuario on Usuario.IdUsuario = Matricula.IdAlumno
+                inner join Seccion on Seccion.IdSeccion = Matricula.IdSeccion
+                inner join Curso on Curso.IdCurso = Seccion.IdCurso
+                inner join EstadoMatricula on EstadoMatricula.IdEstado = Matricula.IdEstado
+                inner join Docente on Docente.IdDocente = Seccion.IdDocente
+                where EstadoMatricula.IdEstado = 1`
+    }
+
+    procesarMatricula(idMatricula, action) {
+        return `UPDATE Matricula
+        SET IdEstado = ${action}
+        WHERE IdMatricula=${idMatricula};`
+    }
+    listaMatriculasAdmin() {
+        return `select Matricula.IdMatricula as id, concat_ws(' ',Usuario.NNombre,Usuario.NApellido) as nameAlumno, Seccion.NSeccion as seccion,Curso.NCurso as curso, concat_ws(' ',Docente.NNombreD,Docente.NApellidoD) as docente  ,NSemestre as semestre, EstadoMatricula.NEstado as estado
+                from Matricula
+                inner join Usuario on Usuario.IdUsuario = Matricula.IdAlumno
+                inner join Seccion on Seccion.IdSeccion = Matricula.IdSeccion
+                inner join Curso on Curso.IdCurso = Seccion.IdCurso
+                inner join EstadoMatricula on EstadoMatricula.IdEstado = Matricula.IdEstado
+                inner join Docente on Docente.IdDocente = Seccion.IdDocente
+                where EstadoMatricula.IdEstado != 1`
+    }
 }
