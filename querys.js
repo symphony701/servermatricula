@@ -71,6 +71,16 @@ module.exports = class QueryManager {
                 inner join Curso on Curso.IdCurso = Seccion.IdCurso;`
     }
     addSolicitud(idAlumno, idSeccion, semestre) {
-        return `INSERT INTO Matricula ('IdAlumno', 'IdSeccion', 'NSemestre', 'IdEstado') VALUES (${idAlumno}, ${idSeccion}, '${semestre}', '1');`
+        return `INSERT INTO Matricula (IdAlumno, IdSeccion, NSemestre, IdEstado) VALUES (${idAlumno}, ${idSeccion}, '${semestre}', 1);`
+    }
+    comprobarCapacidad(idSeccion) {
+        return `SELECT COUNT(*) as cantidad
+         FROM Matricula
+		 WHERE IdEstado != 3 and IdSeccion = ${idSeccion}`
+    }
+    comprobarMatriculaRepetida(idAlumno, idSeccion) {
+        return `SELECT COUNT(*) as repeticiones
+         FROM Matricula
+		 WHERE IdAlumno = ${idAlumno} and IdSeccion = ${idSeccion} and IdEstado !=3;`
     }
 }

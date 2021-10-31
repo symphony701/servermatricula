@@ -180,6 +180,20 @@ app.post('/solicitud', (req, res) => {
         res.json(response)
     })
 })
+app.get('/capacidad/:idSeccion', (req, res) => {
+    connection.query(querymanager.comprobarCapacidad(req.params.idSeccion), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
+
+app.get('/norepeat/:idAlumno/:idSeccion', (req, res) => {
+    connection.query(querymanager.comprobarMatriculaRepetida(req.params.idAlumno, req.params.idSeccion), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
+
 
 
 
