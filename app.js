@@ -19,6 +19,12 @@ connection.query('SELECT 1 + 1 AS solution', function(error, results, fields) {
 app.use(express.json());
 app.use(cors());
 
+app.use((error, req, res, next) => {
+    res.status(400).json({
+        status: 'error',
+        message: error.message
+    })
+});
 
 app.get('/', (req, res) => {
     res.send('Welcom to matricula app')
@@ -78,7 +84,7 @@ app.patch('/cursos', (req, res) => {
 
 app.get('/cursos/delete/:id', (req, res) => {
     connection.query(querymanager.deleteCourse(req.params.id), (error, response) => {
-        if (error) throw error;
+        if (error) console.log("No puede ser eliminado");;
         res.json({})
     })
 })
@@ -113,7 +119,7 @@ app.post('/seccion', (req, res) => {
 
 app.get('/seccion/delete/:id', (req, res) => {
     connection.query(querymanager.deleteSeccion(req.params.id), (error, response) => {
-        if (error) throw error;
+        if (error) console.log("No puede ser eliminado");;
         res.json({})
     })
 })
@@ -144,10 +150,17 @@ app.post('/crear-docente', (req, res) => {
 })
 
 app.get('/docente/delete/:id', (req, res) => {
-    connection.query(querymanager.deleteDocente(req.params.id), (error, response) => {
-        if (error) throw error;
-        res.json({})
-    })
+    try {
+        connection.query(querymanager.deleteDocente(req.params.id), (error, response) => {
+            if (error) {
+                console.log("No puede ser eliminado");
+            }
+            res.json({})
+        })
+    } catch (err) {
+        res.json("error")
+    }
+
 })
 
 app.patch('/docente', (req, res) => {
@@ -203,7 +216,7 @@ app.get('/matriculas-espera/:idAlumno', (req, res) => {
 
 app.delete('/matricula/delete/:id', (req, res) => {
     connection.query(querymanager.eliminarMatricula(req.params.id), (error, response) => {
-        if (error) throw error;
+        if (error) console.log("No puede ser eliminado");;
         res.json(response)
     })
 })
@@ -232,6 +245,13 @@ app.get('/matricula/procesar/:idMatricula/:action', (req, res) => {
 
 app.get('/listar-matriculas-admin', (req, res) => {
     connection.query(querymanager.listaMatriculasAdmin(), (error, response) => {
+        if (error) throw error;
+        res.json(response)
+    })
+})
+
+app.get('/usuariorepeat/:usuario', (req, res) => {
+    connection.query(querymanager.usuarioRepetido(req.params.usuario), (error, response) => {
         if (error) throw error;
         res.json(response)
     })
